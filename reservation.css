@@ -1,0 +1,667 @@
+:root { --bg:#f6f8fb; --fg:#0f172a; --muted:#64748b; --line:#e2e8f0; --brand:#0f172a; }
+
+*{ box-sizing:border-box }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+}
+
+/* Layout */
+.container{ max-width:1100px; margin:auto; padding:16px }
+.header{ display:flex; justify-content:space-between; align-items:center }
+.header h1{ margin:0; font-size:24px }
+.grid{ display:grid; grid-template-columns:1fr; gap:16px }
+@media(min-width:960px){ .grid{ grid-template-columns:2fr 1fr } .wide{ grid-column:1/-1 } }
+
+.card{
+  background:#fff; border:1px solid var(--line); border-radius:16px;
+  padding:16px; box-shadow:0 4px 12px #0001;
+}
+
+/* Calendar */
+.monthbar{ display:flex; gap:8px; justify-content:space-between; align-items:center }
+.month{ font-weight:600 }
+.legend{ display:flex; gap:16px; color:var(--muted); font-size:14px; margin:8px 0 12px }
+.calendar{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px }
+.calendar .head{ color:var(--muted); text-align:center; font-size:12px; padding:6px }
+.day{
+  height:auto; border:1px solid var(--line); border-radius:12px; background:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.day.disabled{ opacity:.4; pointer-events:none }
+.day:hover{ box-shadow:0 6px 12px #0002 }
+
+/* Buttons */
+.btn{ border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 12px; cursor:pointer }
+.btn.primary{ background:var(--brand); color:#fff; border-color:var(--brand) }
+
+/* Form fields */
+.field{ margin:10px 0 }
+.field.inline{ display:flex; gap:12px; align-items:center; flex-wrap:wrap }
+
+/* Text-like inputs: full width */
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="number"],
+.field input[type="date"],
+.field select{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+
+/* Radios & checkboxes should not stretch */
+.field input[type="radio"],
+.field input[type="checkbox"]{
+  width:auto;
+}
+
+/* Optional: label column width for inline fields (title on the left) */
+.field.inline > span{
+  display:inline-block;
+  min-width:9em;      /* 調整可：見出しの横幅 */
+}
+
+/* Radio layout helpers */
+.radio{ display:inline-flex; align-items:center; gap:6px; white-space:nowrap }
+.radio-group{
+  display:flex;
+  flex-wrap:wrap;     /* 狭い画面では折返し */
+  gap:1rem;
+  align-items:center;
+}
+.radio-group label{ display:flex; align-items:center; gap:.25rem; white-space:nowrap }
+
+/* Misc */
+.req{ color:#e11d48; margin-left:4px }
+.hint{ color:var(--muted); font-size:14px }
+.hidden{ display:none }
+
+.slots{ display:grid; grid-template-columns:1fr; gap:8px; margin-top:6px }
+@media(min-width:720px){ .slots{ grid-template-columns:repeat(3,1fr) } }
+.slot{ border:1px solid var(--line); border-radius:12px; padding:10px }
+.slot.disabled{ opacity:.45; pointer-events:none; background:#f8fafc }
+
+.toggle{ display:inline-flex; align-items:center; gap:8px }
+
+.foot{ color:var(--muted); font-size:12px; text-align:center }
+
+/* Ensure selects/options have readable colors (in case of theming) */
+select, option{ color:#0f172a; background:#fff }
+
+#address {
+  width: 100%;        /* 親いっぱい */
+  max-width: 600px;   /* PC画面では広めに */
+}
+
+/* カレンダー記号の見やすさ強化 */
+.mark{ font-size:50px; font-weight:900; line-height:1; }
+.mark-open{   color:#16a34a; }  /* 太い緑（○）  */
+.mark-limited{color:#eab308; }  /* 太い黄色（△）*/
+.mark-full{   color:#dc2626; }  /* 太い赤（×）  */
+.mark-blocked{color:#94a3b8; font-weight:700; opacity:.85;} /* 薄いグレー（−）*/
+
+/* フォーム上の案内ブロック */
+.noteBar{
+  display:flex; gap:12px; align-items:center; justify-content:space-between;
+  padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#f8fafc;
+  margin-bottom:12px;
+}
+.noteText{ color:#e11d48; font-weight:600; }
+
+/* 緑ボタン */
+.btn.btn-green{
+  background:#16a34a; border-color:#16a34a; color:#fff;
+}
+.btn.btn-green:hover{ filter:brightness(0.95); }
+
+/* STEP 表示 */
+.stepBlock{ margin-top:12px; }
+.badge-step{
+  display:inline-block; background:#ef4444; color:#fff; font-weight:700;
+  border-radius:6px; padding:4px 10px; margin-bottom:8px;
+}
+.stepLead{ margin:6px 0 8px; }
+.stepList{ margin:0 0 6px 1.2em; padding-left:0; }
+.stepList li{ margin:2px 0; }
+
+/* 入力欄の統一スタイル */
+.full-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  resize: vertical; /* ユーザーが縦方向にリサイズ可能 */
+}
+
+.captchaBox {
+  padding: 6px 0;
+}
+.req-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.slot.primary{
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+/* === スマホで各カードの横幅を完全に揃える === */
+@media (max-width: 600px){
+  /* コンテナの左右余白を統一 */
+  .container{
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  /* グリッドは1列で全幅、カードの左右の余白はゼロに */
+  .grid{ grid-template-columns: 1fr; }
+  .card{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+  /* （念のため）注意書きのカードも同様に全幅化 */
+  .card.wide{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* === カレンダーのマスを均等＆スマホで丸を小さめに === */
+/* 7分割を完全等分（既に入れていたらそのままでOK） */
+.calendar{ grid-template-columns: repeat(7, minmax(0, 1fr)); }
+
+/* 正方形マス */
+.calendar .head, .day{ aspect-ratio: 1 / 1; }
+
+/* スマホ時の文字サイズ調整（丸が大きすぎるのを抑える） */
+@media (max-width: 600px){
+  .day > div:first-child{               /* 日付数字 */
+    font-size: clamp(10px, 2.8vw, 13px);
+  }
+  .day > div:last-child{                /* ○ △ × − の記号 */
+    font-size: clamp(25px, 4.2vw, 30px); /* ← 少し小さめに調整 */
+    line-height: 1;
+  }
+}
+
+/* —— ここから追記（style.css の一番下）—— */
+
+/* 横スクロールの芽を摘む（外側がはみ出す端末対策） */
+html, body { overflow-x: hidden; }
+
+/* グリッド直下のカードは常に親幅いっぱいに */
+.grid > .card {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+/* 注意書きブロックの折返し＆縮小許可（ここが未適用だと幅が揃いません） */
+.noteBar { flex-wrap: wrap; }
+.noteBar > * { min-width: 0; }                 /* 子要素が縮められるように */
+.noteText { flex: 1 1 auto; word-break: break-word; }
+
+/* 凡例の折返し（小幅端末での押し広げ防止） */
+.legend { flex-wrap: wrap; }
+
+/* カレンダーは親幅を超えないよう固定 */
+.calendar { max-width: 100%; }
+
+/* 正方形指定が確実に効くよう高さは固定しない（念のため再指定） */
+.day { height: auto; }
+
+/* —— 追記ここまで —— */
+/* 注意書き（noteBar）が幅を押し広げないように */
+.noteBar { flex-wrap: wrap; }
+.noteBar > * { min-width: 0; }
+.noteText { flex: 1 1 auto; word-break: break-word; }
+
+/* 凡例も折り返し可（小幅端末での押し広げ防止） */
+.legend { flex-wrap: wrap; }
+
+/* フォームの「見出し＋入力」の横並びをスマホでは縦並びに */
+@media (max-width: 600px){
+  .field.inline{
+    display: block;          /* 横並び → 縦積み */
+  }
+  .field.inline > span{
+    display: block;          /* ラベルを上段に */
+    min-width: 0;            /* 横幅固定を解除 */
+    margin-bottom: 6px;
+    white-space: normal;     /* 長文ラベルを折り返す */
+    word-break: break-word;
+  }
+
+  /* ラジオの長文ラベルも折り返しOKに（はみ出し防止） */
+  .radio-group{
+    gap: 10px 14px;          /* 行間・列間の余白 */
+    flex-wrap: wrap;
+  }
+  .radio-group label{
+    align-items: flex-start; /* マーカーと文字の頭を揃える */
+    white-space: normal;     /* ← これが重要（既存の nowrap を上書き） */
+    line-height: 1.4;
+  }
+
+  /* セレクト・テキストエリアが親幅からはみ出さない保険 */
+  select,
+  .full-input,
+  textarea{
+    max-width: 100%;
+  }
+}
+
+/* カレンダーが親幅を超えないように（保険） */
+.calendar{ max-width: 100%; }
+
+/* 正方形指定が効くように高さ固定は置き換え済みだが、念のため */
+.day{ height: auto; }
+/* PCでも1カラムにして全カードの幅を統一 */
+@media (min-width: 960px){
+  .grid{
+    grid-template-columns: 1fr !important;
+    justify-items: stretch;
+    align-items: start;
+  }
+  .wide{ grid-column: auto; } /* 既存の .wide を解除して通常の1カラムに */
+  .grid > .card{ width: 100%; max-width: 100%; }
+}
+
+/* =========================
+   Elegant theme enhancements
+   ========================= */
+
+/* 1) 色とフォントの磨き込み */
+:root{
+  --bg: #f7f7fb;            /* 少しだけ明るく */
+  --fg: #101828;            /* 文字は深めの藍黒 */
+  --muted:#667085;          /* 補助テキスト */
+  --line:#e6e8ee;           /* 枠線 */
+  --brand:#344a73;          /* 上品なブルーグレー */
+  --brand-acc:#7c91c2;      /* アクセントの淡色 */
+  --ok:#16a34a;             /* ○ */
+  --warn:#eab308;           /* △ */
+  --danger:#dc2626;         /* × */
+  --blocked:#94a3b8;        /* − */
+}
+
+body{
+  font-family: "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color: var(--fg);
+  background: radial-gradient(1200px 800px at 70% -10%, #eef2ff 0%, #f7f7fb 55%, #f7f7fb 100%);
+}
+
+/* 見出しはセリフで気品を */
+h1, h2{
+  font-family: "Noto Serif JP", "Noto Sans JP", serif;
+  letter-spacing: .02em;
+}
+.header h1{ font-size: clamp(22px, 3vw, 28px); }
+
+/* 2) カードを“薄い額縁＋やわらかい影”に */
+.card{
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 18px 20px;
+  background: #fff;
+  box-shadow:
+    0 1px 1px rgba(16,24,40,.02),
+    0 8px 28px rgba(16,24,40,.06);
+}
+.card.wide{ padding-top: 20px; }
+
+/* カード上部にごく薄いグラデーションの帯 */
+.card > h2{
+  margin-top: 0;
+  padding-top: 2px;
+  border-image: linear-gradient(90deg, var(--brand-acc), transparent) 1;
+  border-top: 3px solid transparent;
+}
+
+/* 3) ボタンを上品に */
+.btn{
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+  transition: all .18s ease;
+}
+.btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(16,24,40,.08); }
+.btn.primary{
+  background: linear-gradient(180deg, var(--brand) 0%, #2f4164 100%);
+  border-color: transparent;
+  color:#fff;
+}
+.btn.primary:hover{ filter: brightness(1.03); }
+.btn.btn-green{
+  background: linear-gradient(180deg, #189a43 0%, #138a3c 100%);
+  border-color: transparent; color:#fff;
+}
+
+/* 4) Note/STEP の繊細な整え */
+.noteBar{
+  background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+  border-color: #eef1f6;
+}
+.badge-step{
+  background: #f04438;           /* 派手すぎたら #e11d48 に */
+  border-radius: 10px;
+  padding: 4px 12px;
+  letter-spacing: .04em;
+}
+
+/* 5) 入力 UI（角丸/フォーカスリングを洗練） */
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="number"],
+.field input[type="date"],
+.field select,
+.full-input,
+textarea{
+  border-radius: 12px;
+  border: 1px solid #e6e8ee;
+  background: #fff;
+  transition: box-shadow .18s ease, border-color .18s ease;
+}
+.field input:focus,
+.field select:focus,
+textarea:focus{
+  outline: none;
+  border-color: #c7d0ea;
+  box-shadow: 0 0 0 4px rgba(124,145,194,.18);
+}
+
+/* ラジオ行の高さと行間を整える */
+.radio-group{ gap: 10px 18px; }
+.radio{ gap: 8px; }
+
+/* 6) カレンダー：上品で読みやすく */
+.legend{ color: var(--muted); gap: 18px; }
+.calendar{
+  gap: 10px;                         /* 余白を少し広げる */
+}
+/* 正方形は日付マスだけ */
+.day{
+  aspect-ratio: 1 / 1;
+}
+
+/* ヘッダーは自動高さ（正方形にしない） */
+.calendar .head{
+  aspect-ratio: auto;
+  height: auto;
+  padding: 6px 0;             /* 好みで微調整 */
+  display: flex;
+  align-items: center;
+  justify-content: center;    /* 中央寄せ */
+}
+
+.day{
+  border: 1px solid #e7eaf2;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+  transition: box-shadow .18s ease, transform .12s ease, border-color .18s ease;
+  justify-content: space-between;
+  padding: 8px 0 10px;
+}
+.day:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(16,24,40,.06);
+}
+.day.disabled{ opacity:.45; }
+
+/* 日付と記号のタイポ */
+.day > div:first-child{ font-weight: 600; color:#111827; }
+.day > div:last-child{ font-weight: 900; }
+
+/* 記号カラー（太くハッキリ） */
+.mark-open   { color: var(--ok); }
+.mark-limited{ color: var(--warn); }
+.mark-full   { color: var(--danger); }
+.mark-blocked{ color: var(--blocked); }
+
+/* クリック中の選択状態（slotPickerで選んだ日をわかりやすく） */
+.day.is-picked{
+  border-color: #bfc9e7;
+  box-shadow: 0 0 0 4px rgba(124,145,194,.18);
+}
+
+/* 時間帯のチップも洗練 */
+.slots{ gap: 10px; }
+.slot{
+  border-radius: 14px;
+  border: 1px solid #e6e8ee;
+  background: #fff;
+  transition: transform .12s ease, box-shadow .18s ease, background .18s ease;
+}
+.slot:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(16,24,40,.06);
+}
+.slot.primary{
+  background: linear-gradient(180deg, var(--brand) 0%, #2f4164 100%);
+  color:#fff; border-color: transparent;
+}
+
+/* 7) フッターのトーンを落ち着かせる */
+.foot{
+  color: var(--muted);
+}
+
+/* 8) PCでも1カラムで均一幅（見栄え最優先・ご希望どおり） */
+@media (min-width: 960px){
+  .grid{
+    grid-template-columns: 1fr !important;
+    justify-items: stretch;
+    align-items: start;
+    gap: 18px;
+  }
+  .grid > .card{ width: 100%; max-width: 100%; }
+}
+
+/* 9) モバイル時の丸サイズと余白を微調整（すでにある調整に上書き） */
+@media (max-width: 600px){
+  .calendar{ gap: 8px; }
+  .day{ border-radius: 14px; padding: 6px 0 8px; }
+  .day > div:first-child{ font-size: clamp(11px, 3.2vw, 13px); }
+  .day > div:last-child{ font-size: clamp(22px, 4.0vw, 28px); }
+}
+
+/* ===== Mobile usability tweaks ===== */
+input, select, textarea{ font-size:16px; } /* iOS のズーム防止 */
+label{ line-height:1.4; }
+@media (max-width: 600px){
+  .field{ margin: 10px 0; }
+  .full-input{ width:100%; }
+}
+
+/* 日付と記号を中央に縦揃えする */
+.day {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* 中央寄せ */
+  align-items: center;       /* 横方向も中央 */
+}
+
+/* 日付数字と記号の余白を調整 */
+.day > div:first-child {
+  margin-bottom: 4px;        /* 数字と記号の間に少し余白 */
+}
+.day > div:last-child {
+  line-height: 1;            /* 記号の縦幅を抑える */
+}
+/* カレンダー記号のサイズを統一 */
+.day .mark {
+  font-size: 35px;        /* ○基準で見やすいサイズに */
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- カレンダーセルの中央寄せ（入っていればそのままでOK） --- */
+.day{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 日付とアイコンの間隔 */
+.day .date{ margin-bottom:4px; font-weight:600; color:#334155; }
+
+/* SVGアイコン共通：同じサイズ・同じ線の太さで統一 */
+.mark .icon{
+  width:28px; height:28px;
+  display:block;
+  stroke:currentColor; fill:none;
+  stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round;
+}
+
+/* モバイルは少し小さめ */
+@media (max-width:600px){
+  .mark .icon{ width:24px; height:24px; }
+}
+
+/* 色は currentColor を使い、クラスごとに指定する */
+.icon--open   { color:#16a34a; } /* ○ 緑 */
+.icon--limited{ color:#eab308; } /* △ 黄 */
+.icon--full   { color:#dc2626; } /* × 赤 */
+.icon--blocked{ color:#94a3b8; } /* － 薄グレー */
+
+.slot.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* --- CAPTCHAボックスがはみ出す問題の修正 --- */
+.captchaBox {
+  /* 親要素の幅に合わせてボックスの最大幅を制限 */
+  max-width: 100%;
+  /* ボックス内のはみ出しを隠す設定 */
+  overflow: hidden; 
+}
+/* CAPTCHAのiframe自体も親要素に収まるように調整 (念のため) */
+.captchaBox > .h-captcha {
+  max-width: 100%;
+  transform: scale(1); /* デフォルトのスケールを維持 */
+  transform-origin: 0 0;
+}
+
+/* --- 追記：ラジオボタンを縦に並べるスタイル --- */
+.radio-group-vertical {
+  display: flex;
+  flex-direction: column; /* 縦方向に積む */
+  gap: 12px;              /* 上下の間隔 */
+  align-items: flex-start;
+  margin-top: 8px;
+}
+
+/* スマホでも読みやすくする調整 */
+.radio-group-vertical .radio {
+  white-space: normal;    /* 長い文章を折り返す */
+  line-height: 1.6;       /* 行間を読みやすく */
+}
+
+/* --- 追記：姓名・住所・カスタム時間のスタイル --- */
+
+/* 姓名を横並びにする（スマホでも横並び維持、あるいは狭すぎたら縦） */
+.name-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.name-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.name-label {
+  white-space: nowrap; /* "姓" "名" を折り返さない */
+  font-weight: bold;
+}
+
+/* 住所欄のレイアウト */
+.address-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap; /* スマホで折り返し許可 */
+}
+.zip-input {
+  width: 120px !important; /* 郵便番号は短く */
+}
+.addr-btn {
+  padding: 8px 12px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.addr-btn:hover {
+  background: #e2e8f0;
+}
+
+/* その他の希望時間エリア */
+.custom-time-box {
+  border-left: 4px solid #e11d48; /* 左に赤い線 */
+  padding: 12px;
+  background: #fff0f3; /* 薄いピンク背景 */
+  margin-top: 16px;
+  border-radius: 0 8px 8px 0;
+}
+.custom-time-label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: block;
+}
+.time-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.time-select {
+  width: auto !important; /* 幅を自動調整 */
+  display: inline-block !important;
+  padding: 8px !important;
+}
+.note-red {
+  color: #e11d48;
+  font-size: 13px;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* スマホ調整 */
+@media (max-width: 600px) {
+  .name-row {
+    flex-direction: row; /* スマホでも横並び維持 */
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>難問オセロ・メーカー</title>
+    <link rel="stylesheet" href="osero.css">
+</head>
+<body>
+    <div id="app">
+        <section id="screen-list" class="screen">
+            <h1>難問オセロ 問題一覧</h1>
+            <button class="btn primary" onclick="showScreen('screen-editor')">新しく問題を作る</button>
+            <div id="quiz-list-container" class="list-container">
+                </div>
+        </section>
+
+            <div id="editor-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>マスの編集</h2>
+            <div class="input-group">
+                <label>表示する漢字:</label>
+                <input type="text" id="modal-kanji" placeholder="例：託る">
+            </div>
+            <div class="input-group">
+                <label>正解の読み:</label>
+                <input type="text" id="modal-yomi" placeholder="例：かこつける">
+            </div>
+            <div class="input-group">
+                <label>伏せ字ヒント:</label>
+                <input type="text" id="modal-hint" placeholder="例：〇〇〇〇る">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn success" onclick="commitModal()">決定</button>
+                <button class="btn" onclick="closeModal()">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+        <section id="screen-editor" class="screen hidden">
+            <h1>問題作成 (6×6)</h1>
+            <p>各マスをクリックして漢字と読み（正解）を入力してください</p>
+            <div class="editor-controls">
+                <input type="text" id="quiz-title" placeholder="問題のタイトルを入力">
+                <button class="btn success" onclick="saveQuiz()">この内容で保存する</button>
+                <button class="btn" onclick="showScreen('screen-list')">戻る</button>
+            </div>
+            <div id="editor-board" class="board"></div>
+        </section>
+
+        <section id="screen-game" class="screen hidden">
+            <h1 id="game-title-display">ゲーム中</h1>
+            <div class="game-info">
+                <div id="status">次の番: <span id="current-player" class="blue-text">青</span></div>
+                <button class="btn" onclick="showScreen('screen-list')">中断して戻る</button>
+            </div>
+            <div id="game-board" class="board"></div>
+            <div id="message"></div>
+        </section>
+    </div>
+    <script src="osero.js"></script>
+</body>
+</html>

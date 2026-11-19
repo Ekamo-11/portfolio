@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>クイズメーカー Pro</title>
+    <link rel="stylesheet" href="qsama.css">
+</head>
+<body>
+    <div class="container">
+        <div id="menu-screen" class="screen">
+            <h1>クイズメニュー</h1>
+            <div class="menu-buttons">
+                <button onclick="openSetupForNew()" class="btn primary">問題を新しく作る</button>
+                <button onclick="showSelectScreen()" class="btn">保存した問題で遊ぶ</button>
+            </div>
+        </div>
+
+        <div id="setup-screen" class="screen hidden">
+            <h1>問題作成・編集</h1>
+            <div class="guide-area" style="text-align:left; background:#fff9c4; padding:10px; border-radius:8px; font-size:14px;">
+                <h3>💡 作り方</h3>
+                <ul>
+                    <li><strong>画像:</strong> 問題欄にURLを入れると表示されます。</li>
+                    <li><strong>伏せ字:</strong> 答え欄を <code>{ }</code> で囲むと <code>[  ]</code> と表示されます。</li>
+                    <li><strong>ドボン:</strong> <code>ドボン：選択肢1,2...</code> と書き、答えにドボン番号(1-11)を入れます。</li>
+                </ul>
+            </div>
+
+            <div style="margin: 20px 0; padding: 15px; border: 2px dashed #ccc; border-radius: 8px; background: #f0f4f8;">
+                <h3 style="margin-top:0; font-size:16px;">📦 クイズファイルの共有</h3>
+                <button onclick="exportQuizFile()" class="btn" style="background: #673ab7; color: white;">このクイズをファイルに保存</button>
+                <div style="margin-top: 10px;">
+                    <label class="btn" style="background: #ff9800; color: white; cursor: pointer; display: inline-block;">
+                        ファイルから取り込む
+                        <input type="file" id="import-file-input" style="display: none;" onchange="importQuizFile(this)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="bulk-import-area" style="margin:20px 0;">
+                <textarea id="bulk-input" style="width:90%; height:60px;" placeholder="Excelからコピーして貼り付け"></textarea><br>
+                <button onclick="importBulkData()" class="btn-sub">反映する</button>
+            </div>
+            
+            <input type="text" id="main-title-input" placeholder="クイズのタイトル" style="width:80%; padding:10px; margin-bottom:10px;">
+            <input type="number" id="total-time-input" placeholder="制限時間(秒)" style="width:80%; padding:10px; margin-bottom:10px;">
+            <div id="input-fields"></div>
+            <button onclick="saveAndGoToMenu()" class="btn primary">保存してリストに追加</button>
+            <button onclick="showScreen(menuScreen)" class="btn-sub">戻る</button>
+        </div>
+
+        <div id="select-screen" class="screen hidden">
+            <h1>問題を選択</h1>
+            
+            <div style="margin: 0 auto 20px; max-width: 80%; padding: 15px; border: 2px dashed #666; border-radius: 10px; background: #fff;">
+                <p style="margin-top:0; font-weight:bold; color:#555;">📦 配布されたクイズを取り込む</p>
+                <label class="btn" style="background: #ff9800; color: white; cursor: pointer; display: inline-block;">
+                    ファイルを選択
+                    <input type="file" id="direct-import-input" style="display: none;" onchange="importQuizFileDirectly(this)">
+                </label>
+                <p style="font-size: 11px; color: #888; margin-bottom:0;">※取り込むと即座にリストに追加されます</p>
+            </div>
+
+            <div id="quiz-list-container"></div>
+            <div id="quiz-config-area" class="hidden">
+                <h2 id="disp-quiz-title"></h2>
+                倍率: <input type="range" id="timer-ratio" min="0.5" max="3.0" step="0.1" value="1.0" oninput="updateRatioDisp(this.value)"> <span id="timer-ratio-val">1.0</span>
+                <div style="margin-top:20px; display:flex; justify-content:center; gap:10px;">
+                    <button onclick="startQuiz()" class="btn primary">開始</button>
+                    <button onclick="editSelectedQuiz()" class="btn" style="background:#2196F3; color:white;">編集</button>
+                </div>
+            </div>
+            <button onclick="showScreen(menuScreen)" class="btn-sub">戻る</button>
+        </div>
+
+        <div id="quiz-screen" class="screen hidden">
+            <h2 id="current-quiz-title"></h2>
+            <div id="timer-info">残り: <span id="time-display">0.0</span>s</div>
+            <div id="timer-container" style="width:100%; height:10px; background:#ddd;"><div id="timer-bar" style="height:100%; background:#f44336; width:100%;"></div></div>
+            
+            <div class="quiz-box">
+                <div id="question-number" class="q-num"></div>
+                <div id="question-text" class="q-text"></div>
+                <div id="dobon-container" class="hidden"><div id="dobon-grid" class="dobon-grid"></div></div>
+                <div id="status-icons"></div>
+            </div>
+
+            <div id="answer-area" class="input-area">
+                <input type="text" id="answer-input" placeholder="答えを入力">
+                <p id="result-message"></p>
+            </div>
+            <button onclick="exitQuiz()" class="btn-sub">中断して戻る</button>
+        </div>
+    </div>
+    <script src="qsama.js"></script>
+</body>
+</html>

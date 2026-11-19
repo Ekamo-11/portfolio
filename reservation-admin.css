@@ -1,0 +1,338 @@
+﻿:root {
+  --ink:#0f172a;
+  --muted:#64748b;
+  --card:#fff;
+  --line:#e2e8f0;
+  --bg:#f6f8fb;
+  --brand:#0f172a;
+}
+
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:'Noto Sans JP', system-ui, Arial;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.wrap {
+  max-width:1100px;
+  margin:auto;
+  padding:16px;
+}
+
+h1 {
+  margin:8px 0 16px;
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 4px 12px #0001;
+}
+
+.row {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+button, select {
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+}
+
+.btn {
+  background:var(--brand);
+  color:#fff;
+  border-color:var(--brand);
+  cursor:pointer;
+}
+
+.btn--danger {
+  background:#dc2626;
+  border-color:#dc2626;
+}
+
+.muted {
+  color:var(--muted);
+}
+
+/* calendar */
+.cal-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:10px;
+}
+
+/* 管理画面カレンダー（index と同じ余白感に戻す） */
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:10px; /* index と揃える */
+}
+
+/* カードサイズの調整（セルが小さく見えるのを防ぐ） */
+.day{ height:auto; aspect-ratio:1 / 1; width:100%; box-sizing:border-box; }
+.day.day-cell{ width:100%; }
+.calendar .head{ aspect-ratio:auto; height:auto; padding:6px 0; display:flex; align-items:center; justify-content:center; }
+
+.head {
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.day {
+  height:80px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:background 0.2s;
+}
+
+.day:hover {
+  background:#f1f5f9;
+}
+
+.day.blocked {
+  background:#fafafa;
+  color:#94a3b8;
+  border-style:dashed;
+}
+
+.day.disabled {
+  opacity:.4;
+  pointer-events:none;
+}
+
+.date {
+  font-weight:700;
+}
+
+.mark {
+  font-size:18px;
+  line-height:1;
+}
+
+#dayDetail .list {
+  display:grid;
+  gap:8px;
+  margin-top:8px;
+}
+
+#dayDetail .item {
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px;
+}
+
+@media (max-width:720px) {
+  .day { height:64px; }
+}
+
+/* 記号の見た目を統一（50px） */
+.mark {
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 記号の色 */
+.mark.circle   { color: #16a34a; } /* ○ */
+.mark.triangle { color: #eab308; } /* △ */
+.mark.cross    { color: #dc2626; } /* × */
+.mark.dash     { color: #94a3b8; } /* − */
+
+/* 一括選択の見た目 */
+.day.selected { outline: 3px solid #2563eb; outline-offset: -3px; }
+.tools { display:flex; gap:8px; flex-wrap:wrap; margin: 8px 0; }
+
+/* すでにある .tools はそのままでOK */
+
+/* 一括選択ONの強調 */
+.btn-ghost { background:#fff; border-color:#cbd5e1; }
+.btn-ghost.is-active { background:#1f2937; color:#fff; border-color:#1f2937; }
+
+/* バッジ */
+.badge{
+  background:#1d4ed8; color:#fff; padding:6px 10px; border-radius:9999px;
+  font-size:12px; font-weight:700;
+}
+
+/* セルの選択状態を濃く分かりやすく */
+.day.selected{
+  outline: 3px solid #2563eb; outline-offset: -3px;
+  background:#e0ebff; border-color:#2563eb;
+}
+
+/* ツールバーの整理 */
+.tool-row{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap:12px;
+}
+.group{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+/* セレクト */
+.select{
+  height:40px; padding:0 10px; border:1px solid #cbd5e1; border-radius:10px; background:#fff;
+}
+
+/* トグルボタン（常に表示・状態が分かる） */
+.btn-toggle{
+  height:40px; padding:0 14px; border:1px solid #cbd5e1; background:#fff;
+  border-radius:12px; font-weight:700; display:flex; gap:8px; align-items:center;
+}
+.btn-toggle .dot{
+  width:10px; height:10px; border-radius:9999px; background:#94a3b8; display:inline-block;
+}
+.btn-toggle.is-active{ border-color:#1f2937; background:#1f2937; color:#fff; }
+.btn-toggle.is-active .dot{ background:#22c55e; }
+
+.muted{ color:#64748b; font-size:14px; }
+
+.hint{
+  margin-top:8px; padding:8px 12px; background:#eef2ff; color:#1e40af; border-radius:10px; font-size:13px;
+}
+
+/* プライマリ/危険色（押下時の反応&ローディング） */
+.btn-primary{ background:#111827; color:#fff; }
+.btn-danger { background:#dc2626; color:#fff; }
+.btn-primary:hover, .btn-danger:hover{ filter:brightness(0.95); }
+.btn[disabled]{ opacity:0.6; cursor:not-allowed; }
+
+.btn.is-loading{ position:relative; }
+.btn.is-loading::after{
+  content:""; position:absolute; right:10px; width:16px; height:16px; border:2px solid currentColor;
+  border-bottom-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg);} }
+
+/* トースト */
+.toast{
+  position:fixed; right:18px; bottom:18px; padding:12px 16px; background:#111827; color:#fff;
+  border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.2); opacity:0; pointer-events:none; transform:translateY(10px);
+  transition:.25s ease;
+}
+.toast.show{ opacity:1; transform:translateY(0); }
+
+/* 画面幅 <= 640px のときの軽微な最適化 */
+@media (max-width: 640px) {
+  .toolbar { 
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .toolbar .button,
+  .toolbar select,
+  .toolbar .chip {
+    width: calc(50% - .5rem);
+  }
+  .calendar {
+    grid-template-columns: repeat(7, minmax(44px, 1fr));
+  }
+  .calendar .day {
+    min-height: 64px;
+    padding: 6px 4px;
+  }
+  .legend { font-size: 12px; }
+}
+
+/* =========================
+ * Calendar: match style.css
+ * ========================= */
+button.day,
+button.day-cell {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.day-cell,
+.day.day-cell {
+  aspect-ratio: 1 / 1;
+  border: 1px solid #e7eaf2;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+  transition: box-shadow .18s ease, transform .12s ease, border-color .18s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 10px;
+}
+
+.day-cell:hover,
+.day.day-cell:hover { box-shadow: 0 6px 12px #0002; }
+
+/* Empty padding cells */
+.day-cell.pad,
+.day.day-cell.pad {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Inner content to mirror index calendar */
+.day-cell .day-num { margin-bottom: 4px; color: var(--muted); font-weight: 600; }
+.day-cell .day-badge {
+  line-height: 1;
+  font-size: 42px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #16a34a; /* open: green */
+}
+
+/* 選択状態（青い枠） */
+.day.selected{
+  outline: 3px solid #2563eb; outline-offset: -3px;
+}
+
+/* 一括選択トグルの点を緑に */
+.btn-toggle .dot{ background:#94a3b8; }
+.btn-toggle.is-active .dot{ background:#22c55e; }
+
+/* Blocked/disabled states */
+.day-cell.is-blocked,
+.day.day-cell.is-blocked {
+  background: #fafafa;
+  color: #94a3b8;
+  border-style: dashed;
+}
+.day-cell.disabled,
+.day.day-cell.disabled { opacity: .45; pointer-events: none; }
+
+/* Mobile tweaks similar to style.css */
+@media (max-width: 600px){
+  .calendar{ gap: 0; }
+  .day.day-cell{ border-radius: 14px; padding: 6px 0 8px; }
+  .day-cell .day-num{ font-size: clamp(11px, 3.2vw, 13px); }
+  .day-cell .day-badge{ font-size: clamp(22px, 4.0vw, 28px); }
+}

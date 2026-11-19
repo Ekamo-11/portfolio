@@ -1,0 +1,31 @@
+body { font-family: sans-serif; text-align: center; background: #e0e0e0; margin: 0; }
+.container { max-width: 700px; margin: 20px auto; background: #fdfaf0; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.hidden { display: none !important; }
+.quiz-box { background: rgba(255, 255, 255, 0.4); padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid #e0d0b0; min-height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.q-text { font-size: 24px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+.quiz-image { max-width: 100%; max-height: 280px; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.hint-text { font-size: 22px; color: #333; background: #fff; padding: 8px 20px; border-radius: 10px; border: 2px solid #e0d0b0; display: inline-block; }
+
+#status-icons { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+.status-node { width: 28px; height: 28px; border-radius: 50%; background: #ddd; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #888; transition: all 0.3s; }
+.status-node.solved { background: #4caf50 !important; color: white !important; border-color: #388e3c !important; }
+
+.dobon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
+.dobon-item { background: #1a73e8; color: white; padding: 15px 5px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; border: 2px solid #1557b0; transition: transform 0.1s; }
+.dobon-item.selected { background: #90a4ae; border-color: #78909c; pointer-events: none; opacity: 0.7; }
+.dobon-item.exploded { background: #d32f2f; border-color: #b71c1c; }
+
+#answer-input { width: 80%; padding: 12px; font-size: 20px; text-align: center; border-radius: 8px; border: 2px solid #ddd; }
+.btn { padding: 10px 20px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; }
+.btn.primary { background: #4caf50; color: white; }
+.btn-sub { background: #9e9e9e; color: white; margin-top: 10px; }
+.quiz-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px; margin-bottom: 5px; border-radius: 6px; border: 1px solid #ddd; }
+
+/* 選択画面のインポート枠 */
+#select-screen div[style*="dashed"] {
+    transition: background 0.3s;
+}
+#select-screen div[style*="dashed"]:hover {
+    background: #fdfdfd !important;
+}

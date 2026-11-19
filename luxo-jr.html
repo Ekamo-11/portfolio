@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>卒業制作「ルクソーJr.」紹介</title>
+<style>
+  :root { --fg:#1a1a1a; --muted:#5a5a5a; --line:#ddd; --accent:#0b5cad; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; color:var(--fg); line-height:1.8; }
+  .wrap { max-width:820px; margin:0 auto; padding:32px 20px 64px; }
+  h1 { font-size:25px; margin:0 0 6px; }
+  .sub { color:var(--muted); font-size:14px; margin:0 0 24px; }
+  h2 { font-size:18px; border-left:4px solid var(--accent); padding-left:10px; margin:32px 0 10px; }
+  p, li { font-size:14.5px; }
+  ul { padding-left:20px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; margin:10px 0; }
+  th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; }
+  th { background:#f2f2f0; }
+  .back { font-size:13px; }
+  footer { margin-top:44px; border-top:1px solid var(--line); padding-top:12px; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="back"><a href="index.html">← ポートフォリオに戻る</a></p>
+  <h1>卒業制作「ルクソーJr.」</h1>
+  <p class="sub">トライデントコンピュータ専門学校 卒業制作（4人チーム）／担当：PC側の映像認識プログラムと通信</p>
+
+  <h2>概要</h2>
+  <p>ピクサーのランプ「ルクソーJr.」のように動くデスクランプを題材にした卒業制作です。PCのカメラで人の表情・ジェスチャー・周囲の物体を認識し、その結果に応じて実物のランプが首を振ったり、うなずいたり、LEDの色を変えたりします。私はプログラム班として、PC側の認識処理と、ランプへ指示を送る通信部分を担当しました。</p>
+
+  <h2>システム構成</h2>
+  <table>
+    <tr><th>要素</th><th>内容</th></tr>
+    <tr><td>PC側（担当）</td><td>Python。OpenCVでカメラ映像を取得し、MediaPipeで表情・ジェスチャー、YOLOで物体を検出。動作とLED色を決め、UDPで送信</td></tr>
+    <tr><td>通信</td><td>UDP（ポート5005）。「PAN:90,ARM:124,HEAD:15,RGB:0,0,0」形式の文字列を毎フレーム送信</td></tr>
+    <tr><td>ランプ側（実機班）</td><td>Raspberry Pi Pico W（MicroPython）。サーボ3軸（土台・腕・頭）とNeoPixel LED 8個を制御</td></tr>
+  </table>
+
+  <h2>認識できるもの（検証済み）</h2>
+  <ul>
+    <li>顔の位置に合わせたランプの追従（PAN）</li>
+    <li>表情・状態：笑顔（うなずき）、驚き、あくび（休憩動作）、うつむき継続（居眠り検知の流れ）</li>
+    <li>ジェスチャー：サムズアップ（称賛・ダンス動作）</li>
+    <li>物体：ペットボトル（水分補給の促し）、スマートフォン、PCマウス（作業中）</li>
+    <li>手動モード：キーボード1〜6で6種類の動作を直接実行</li>
+  </ul>
+
+  <h2>開発で工夫した点</h2>
+  <ul>
+    <li>シミュレーター環境でPCからランプ側へ通信が届かない問題について、通信の方向ごとに切り分けて検証し、コードではなくシミュレーター環境側の制限であることを特定しました。その後はPC側の開発を先に完成させ、実機での最終確認に備えました。</li>
+    <li>マウス検出が反応しない問題は、物体検出の信頼度しきい値を調整（0.30→0.20）して解決し、誤検出がないことも確認しました。</li>
+    <li>受信確認用のプログラムを別途作成し、送信データ（900件以上）が実機側の読み取り形式と一致することを事前に検証しました。</li>
+  </ul>
+
+  <h2>進捗</h2>
+  <p>PC側の開発・検証は完了しています（送信プログラム、認識トリガー全種、手動動作、実機接続手順書）。残るは実機ランプとの最終連携確認で、実機側の組み立て完了後に実施する予定です。</p>
+
+  <footer>© 2026 井伊優嘉</footer>
+</div>
+</body>
+</html>
