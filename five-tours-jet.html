@@ -1029,7 +1029,16 @@
       });
       el.fire.addEventListener("click", fire);
 
-      el.kb.addEventListener("input", function(){
+      var kbComposing = false;
+      el.kb.addEventListener("compositionstart", function(){ kbComposing = true; });
+      el.kb.addEventListener("compositionend", function(){
+        kbComposing = false;
+        if (!G || G.phase !== "playing") { renderAnswer(); return; }
+        var v = normalize(el.kb.value).replace(/[^ぁ-ゖー]/g, "");
+        setAnswer(v);
+      });
+      el.kb.addEventListener("input", function(e){
+        if (kbComposing || e.isComposing) return;
         if (!G || G.phase !== "playing") { renderAnswer(); return; }
         var v = normalize(el.kb.value).replace(/[^ぁ-ゖー]/g, "");
         setAnswer(v);

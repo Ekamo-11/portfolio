@@ -27,7 +27,28 @@ window.onload = () => {
         inputFields.appendChild(row);
     }
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) quizList = JSON.parse(saved);
+    if (saved) {
+        quizList = JSON.parse(saved);
+    } else {
+        // 初回のみサンプルクイズを用意し、開いてすぐ遊べるようにする
+        quizList = [{
+            title: "サンプル：漢字の読みクイズ",
+            time: 120,
+            questions: {
+                "1": { q: "相殺", a: "そうさい", solved: false },
+                "2": { q: "更迭", a: "こうてつ", solved: false },
+                "3": { q: "遵守", a: "じゅんしゅ", solved: false },
+                "4": { q: "捏造", a: "ねつぞう", solved: false },
+                "5": { q: "完遂", a: "かんすい", solved: false },
+                "6": { q: "老舗", a: "しにせ", solved: false },
+                "7": { q: "未曾有", a: "みぞう", solved: false },
+                "8": { q: "早急", a: "さっきゅう", solved: false },
+                "9": { q: "重複", a: "ちょうふく", solved: false },
+                "0": { q: "払拭", a: "ふっしょく", solved: false }
+            }
+        }];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(quizList));
+    }
 };
 
 function showScreen(target) {

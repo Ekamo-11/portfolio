@@ -1,5 +1,20 @@
 const BOARD_SIZE = 6;
 let savedQuizzes = JSON.parse(localStorage.getItem('nanmon_osero_data')) || [];
+
+// 初回のみサンプル問題を用意し、開いてすぐ遊べるようにする
+if (localStorage.getItem('nanmon_osero_data') === null) {
+    const K = (kanji, yomi, hint) => ({ kanji, yomi, hint });
+    const sampleBoard = [
+        [K('相殺','そうさい','帳消し'), K('漸く','ようやく','やっと'), K('忌憚','きたん','遠慮'), K('凡例','はんれい','本の使い方'), K('更迭','こうてつ','交替'), K('遵守','じゅんしゅ','守ること')],
+        [K('捏造','ねつぞう','でっち上げ'), K('貼付','ちょうふ','貼り付け'), K('完遂','かんすい','やり遂げる'), K('汎用','はんよう','広く使う'), K('杜撰','ずさん','いい加減'), K('曖昧','あいまい','はっきりしない')],
+        [K('進捗','しんちょく','進み具合'), K('固執','こしつ','こだわる'), null, null, K('漸次','ぜんじ','だんだん'), K('老舗','しにせ','昔からの店')],
+        [K('訃報','ふほう','死亡の知らせ'), K('悪寒','おかん','寒気'), null, null, K('収斂','しゅうれん','収まる'), K('払拭','ふっしょく','ぬぐい去る')],
+        [K('拙速','せっそく','下手でも速く'), K('惜敗','せきはい','惜しい負け'), K('辛辣','しんらつ','手厳しい'), K('逐次','ちくじ','順々に'), K('頓に','とみに','急に'), K('専ら','もっぱら','ひたすら')],
+        [K('概ね','おおむね','だいたい'), K('早急','さっきゅう','急ぐこと'), K('未曾有','みぞう','今までにない'), K('重複','ちょうふく','かさなる'), K('依存','いそん','よりかかる'), K('唆す','そそのかす','けしかける')]
+    ];
+    savedQuizzes = [{ id: 'sample-kanji', title: 'サンプル：難読漢字オセロ', board: sampleBoard }];
+    localStorage.setItem('nanmon_osero_data', JSON.stringify(savedQuizzes));
+}
 let currentEditingBoard = [];
 let currentGameData = null;
 let boardState = [];
