@@ -88,6 +88,22 @@ function getHintStyle(text) {
     
     return `style="${styles.join('; ')};"`;
 }
+// --- 読みの文字数マスク（意味ヒントの代わりに表示） ---
+function getReadingMask(data) {
+    const word = (data && data.kanji) || '';
+    const yomi = (data && data.yomi) || '';
+    if (!yomi) return { html: '', len: 0 };
+    // 送り仮名 = 単語の末尾のひらがな部分（読みの末尾もそのまま見せる）
+    const okuriMatch = word.match(/[ぁ-ん]+$/);
+    const okuriLen = okuriMatch ? okuriMatch[0].length : 0;
+    const maskPart = yomi.slice(0, Math.max(0, yomi.length - okuriLen));
+    const tail = okuriLen > 0 ? yomi.slice(yomi.length - okuriLen) : '';
+    const smallKana = 'ぁぃぅぇぉゃゅょっゎゕゖ';
+    const html = [...maskPart].map(ch =>
+        smallKana.includes(ch) ? '<span style="font-size:0.55em;">〇</span>' : '〇'
+    ).join('') + tail;
+    return { html, len: [...maskPart].length + [...tail].length };
+}
 // --- 問題作成ロジック ---
 function initEditor() {
     const container = document.getElementById('editor-board');
@@ -265,7 +281,7 @@ function renderGameBoard() {
                 cell.innerHTML = `
                     <div class="cell-content">
                         <div class="kanji" ${getKanjiStyle(data.kanji, false)}>${data.kanji}</div>
-                        ${data.hint ? `<div class="yomi-hint" ${getHintStyle(data.hint)}>${data.hint}</div>` : ''}
+                        ${getReadingMask(data).html ? `<div class="yomi-hint" ${getHintStyle('〇'.repeat(getReadingMask(data).len))}>${getReadingMask(data).html}</div>` : ''}
                     </div>
                 `;
                 cell.onclick = () => handleCellClick(y, x, data);
@@ -293,8 +309,12 @@ function handleCellClick(y, x, data) {
     if (flippable.length === 0) return alert("そこには置けません");
 
     const answer = prompt(`${data.kanji} の読みは？`);
+    if (answer === null) return;
     if (answer !== data.yomi) {
-        alert("不正解！");
+        alert("不正解！相手のターンになります。");
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+        renderGameBoard();
+        checkGameOver();
         return;
     }
 
