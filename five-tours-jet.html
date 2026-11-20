@@ -207,6 +207,21 @@
         position:fixed; z-index:40; pointer-events:none; font-size:1.4rem; color:var(--yellow);
         text-shadow:0 0 10px rgba(250,204,21,.9);
       }
+      /* bounced-back characters (wrong answer) */
+      .bounce-char{
+        position:fixed; z-index:42; pointer-events:none;
+        font-family:"DotGothic16",sans-serif; font-weight:700;
+        font-size:clamp(1.5rem,5.5vw,2.2rem); color:#fda4af;
+        text-shadow:0 0 6px var(--red), 0 0 18px rgba(248,113,113,.85);
+        white-space:nowrap;
+      }
+      .impact{
+        position:fixed; z-index:43; pointer-events:none;
+        font-family:"DotGothic16",sans-serif; font-weight:700;
+        font-size:clamp(1.3rem,5vw,2rem); color:#fff;
+        text-shadow:0 0 8px var(--yellow), 0 0 22px rgba(250,204,21,.9);
+        white-space:nowrap;
+      }
       .bullet{
         position:fixed; z-index:41; pointer-events:none;
         font-family:"DotGothic16",sans-serif; font-weight:700;
@@ -639,6 +654,7 @@
       }
       var SFX = {
         fire:    function(){ tone(280, 0.22, "square", 0.14, 0, 980); },
+        bounce:  function(){ tone(320, 0.16, "square", 0.12, 0, 85); tone(130, 0.24, "triangle", 0.15, 0.02, 55); },
         correct: function(){ [523,659,784,1047].forEach(function(f,i){ tone(f, 0.16, "square", 0.12, i*0.09); }); },
         damage:  function(){ tone(420, 0.7, "sawtooth", 0.16, 0, 55); tone(90, 0.7, "triangle", 0.18, 0.05, 40); },
         tick:    function(){ tone(1150, 0.05, "square", 0.05); },
@@ -852,7 +868,7 @@
         shootProjectile(function(){
           var q = G.questions[G.qi];
           if (normalize(G.answer) === q.a) onCorrect();
-          else onWrong();
+          else bounceBack(G.answer, onWrong);
         });
       }
       function shootProjectile(done){
@@ -872,6 +888,58 @@
           { transform: "translate(calc(-50% + " + dx + "px), calc(-50% + " + dy + "px)) scale(.55)", opacity: 1 }
         ], { duration: 420, easing: "cubic-bezier(.3,.7,.6,1)" });
         anim.onfinish = function(){ b.remove(); done(); };
+      }
+      /* 不正解：撃った文字が敵に当たって「パァン」と跳ね返り、散らばって落ちる */
+      function bounceBack(text, done){
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce || !text){ done(); return; }
+        SFX.bounce();
+        var r = el.enemy.getBoundingClientRect();
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        el.enemy.animate([
+          { transform: "scale(1)" },
+          { transform: "scale(1.18) rotate(-4deg)" },
+          { transform: "scale(1)" }
+        ], { duration: 260, easing: "ease-out" });
+        var imp = document.createElement("div");
+        imp.className = "impact";
+        imp.textContent = "パァン！";
+        imp.style.left = cx + "px";
+        imp.style.top = (cy - r.height / 2 - 8) + "px";
+        document.body.appendChild(imp);
+        var ia = imp.animate([
+          { transform: "translate(-50%,-50%) scale(.4) rotate(-8deg)", opacity: 0 },
+          { transform: "translate(-50%,-50%) scale(1.25) rotate(3deg)", opacity: 1, offset: 0.3 },
+          { transform: "translate(-50%,-50%) scale(1.05) rotate(0deg)", opacity: 0 }
+        ], { duration: 520, easing: "ease-out" });
+        ia.onfinish = function(){ imp.remove(); };
+        var dest = el.ansDisplay.getBoundingClientRect();
+        var chars = text.split("");
+        var left = chars.length;
+        chars.forEach(function(ch, i){
+          var s = document.createElement("span");
+          s.className = "bounce-char";
+          s.textContent = ch;
+          var sx = cx + (i - (chars.length - 1) / 2) * 30;
+          s.style.left = sx + "px";
+          s.style.top = cy + "px";
+          s.style.transform = "translate(-50%,-50%)";
+          document.body.appendChild(s);
+          var dx = (dest.left + dest.width / 2 - sx) * (0.55 + Math.random() * 0.5) + (Math.random() * 90 - 45);
+          var up = 90 + Math.random() * 110;
+          var drop = (window.innerHeight - cy) + 90;
+          var rot = Math.random() * 300 - 150;
+          var a = s.animate([
+            { transform: "translate(-50%,-50%) rotate(0deg)", opacity: 1, offset: 0, easing: "cubic-bezier(.17,.67,.35,1)" },
+            { transform: "translate(calc(-50% + " + (dx * 0.6) + "px), calc(-50% - " + up + "px)) rotate(" + (rot * 0.45) + "deg)", opacity: 1, offset: 0.34, easing: "cubic-bezier(.55,.06,.68,.45)" },
+            { transform: "translate(calc(-50% + " + dx + "px), calc(-50% + " + drop + "px)) rotate(" + rot + "deg)", opacity: 0, offset: 1 }
+          ], { duration: 780 + Math.random() * 260, delay: i * 35 });
+          a.onfinish = function(){
+            s.remove();
+            left--;
+            if (left === 0) done();
+          };
+        });
       }
       function explode(){
         var r = el.enemy.getBoundingClientRect();
@@ -910,7 +978,7 @@
           nextQuestion();
         }, 1150);
       }
-      /* 不正解：演出は一切なし。入力した答えがそのまま消え、残り時間のまま打ち直せる */
+      /* 不正解：跳ね返し演出のあと、入力した答えが消え、残り時間のまま打ち直せる */
       function onWrong(){
         G.phase = "playing";
         G.answer = "";
